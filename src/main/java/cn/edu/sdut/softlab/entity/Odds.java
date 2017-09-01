@@ -13,66 +13,66 @@ import java.util.Date;
  */
 public class Odds {
     
-    private Double win;
-    private Double draw;
-    private Double lose;
-    private Double returnrate;
-    private Date   updatetime;
+    private Double Win;
+    private Double Draw;
+    private Double Lose;
+    private Double ReturnRate;
+    private Date   UpdateTime;
 
     public Odds() {
     }
 
-    public Odds(Double win, Double draw, Double lose, Double returnrate, Date updatetime) {
-        this.win = win;
-        this.draw = draw;
-        this.lose = lose;
-        this.returnrate = returnrate;
-        this.updatetime = updatetime;
+    public Odds(Double Win, Double Draw, Double Lose, Double ReturnRate, Date UpdateTime) {
+        this.Win = Win;
+        this.Draw = Draw;
+        this.Lose = Lose;
+        this.ReturnRate = ReturnRate;
+        this.UpdateTime = UpdateTime;
     }
 
     public Double getWin() {
-        return win;
+        return Win;
     }
 
-    public void setWin(Double win) {
-        this.win = win;
+    public void setWin(Double Win) {
+        this.Win = Win;
     }
 
     public Double getDraw() {
-        return draw;
+        return Draw;
     }
 
-    public void setDraw(Double draw) {
-        this.draw = draw;
+    public void setDraw(Double Draw) {
+        this.Draw = Draw;
     }
 
     public Double getLose() {
-        return lose;
+        return Lose;
     }
 
-    public void setLose(Double lose) {
-        this.lose = lose;
+    public void setLose(Double Lose) {
+        this.Lose = Lose;
     }
 
-    public Double getReturnrate() {
-        return returnrate;
+    public Double getReturnRate() {
+        return ReturnRate;
     }
 
-    public void setReturnrate(Double returnrate) {
-        this.returnrate = returnrate;
+    public void setReturnRate(Double ReturnRate) {
+        this.ReturnRate = ReturnRate;
     }
 
-    public Date getUpdatetime() {
-        return updatetime;
+    public Date getUpdateTime() {
+        return UpdateTime;
     }
 
-    public void setUpdatetime(Date updatetime) {
-        this.updatetime = updatetime;
+    public void setUpdateTime(Date UpdateTime) {
+        this.UpdateTime = UpdateTime;
     }
 
     @Override
     public String toString() {
-        return "Odds{" + "win=" + win + ", draw=" + draw + ", lose=" + lose + ", returnrate=" + returnrate + ", updatetime=" + updatetime + '}';
+        return "Odds{" + "Win=" + Win + ", Draw=" + Draw + ", Lose=" + Lose + ", ReturnRate=" + ReturnRate + ", UpdateTime=" + UpdateTime + '}';
     }
     
 }

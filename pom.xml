@@ -11,6 +11,7 @@
 
 
     <properties>
+        <fileName>springMongo</fileName>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,7 +38,7 @@
         
         <!-- servlet web -->
         <dependency>
-            <groupId>javax.servlet</groupId>
+            <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>${jstl.version}</version>
         </dependency>
@@ -56,6 +57,11 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency> 
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.1</version>
+        </dependency>
         
         <!--datasource-->
         <dependency>
@@ -73,6 +79,11 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
@@ -142,23 +153,23 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>4.1.7.RELEASE</version>
+            <version>4.3.6.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>4.1.7.RELEASE</version>
+            <version>4.3.6.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.1.7.RELEASE</version>
+            <version>4.3.6.RELEASE</version>
         </dependency>
         <!--spring dao-->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
-            <version>1.8.0.RELEASE</version>
+            <version>1.10.6.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -168,42 +179,37 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>4.1.7.RELEASE</version>
+            <version>4.3.6.RELEASE</version>
         </dependency>
         <!--spring web-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>4.1.6.RELEASE</version>
+            <version>4.3.6.RELEASE</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.1.7.RELEASE</version>
+            <version>4.3.6.RELEASE</version>
         </dependency>
         <!--spring test-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.1.7.RELEASE</version>
+            <version>4.3.6.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>4.1.7.RELEASE</version>
+            <version>4.3.6.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
-            <version>4.1.7.RELEASE</version>
+            <version>4.3.6.RELEASE</version>
         </dependency>
 		
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.2.5.Final</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -234,6 +240,7 @@
                     <user username="admin" password="admin" roles="tomcat，manager,admin,manager-gui,manager-script"/> -->
                     <username>admin</username>
                     <password>admin</password>
+                    <path>/${fileName}</path>
                 </configuration>
             </plugin>
 
@@ -341,7 +348,25 @@
                     <failOnViolation>true</failOnViolation>
                 </configuration>
             </plugin>
-
+            
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <!-- 此为管理员路径，不是部署路径 -->
+                    <url>http://localhost:8080/manager/text</url>
+                    <uriEncoding>utf-8</uriEncoding>
+                    <!-- <update>true</update>
+                    <server>tomcat</server>-->
+                    <!-- 此处为服务器上的用户名和密码，早tomcat-user里设置 -->
+                    <!-- 格式如 <role rolename="tomcat"/> <role rolename="manager"/> <role 
+                    rolename="admin"/> <role rolename="manager-gui"/> <role rolename="manager-script"/> 
+                    <user username="admin" password="admin" roles="tomcat，manager,admin,manager-gui,manager-script"/> -->
+                    <username>admin</username>
+                    <password>admin</password>
+                </configuration>
+            </plugin>
         </plugins>
     </reporting>
 
