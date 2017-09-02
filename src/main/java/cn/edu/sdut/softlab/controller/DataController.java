@@ -7,9 +7,12 @@ package cn.edu.sdut.softlab.controller;
 
 import cn.edu.sdut.softlab.entity.Data;
 import cn.edu.sdut.softlab.repository.DataRepository;
+import cn.edu.sdut.softlab.util.CsvUtil;
 import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,13 +28,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "data")
 public class DataController {
+    
+    final static Logger logger = LoggerFactory.getLogger(DataController.class);
 
     @Autowired
     DataRepository dataRepository;
     
-    @RequestMapping(value = "/getdatalist", method = RequestMethod.POST)
+    @RequestMapping(value = "/getalldata", method = RequestMethod.POST)
     @ResponseBody
-    public Object getDataList() {
+    public Object getAllData() {
         return dataRepository.findAll();
     }
 
@@ -48,12 +53,9 @@ public class DataController {
         return JsonList;
     }
     
-    @RequestMapping(value = "/findPost",method = RequestMethod.POST)
-    public List<Data> getSingleData(@RequestParam("Company") String Company,
-                                    @RequestParam("League") String League,
-                                    @RequestParam("Year") String Year,
-                                    @RequestParam("Match") String Match){
+    public List<Data> getDataList(String Company, String League, String Year, String Match) {
         List<Data> dataList = new ArrayList<>();
+        logger.info("Find By Company: " + Company + "League: " + League + "Year: " + Year + "Match: " + Match);
         if (!(Company == null || Company.equals(""))) {
             if (!(League == null || League.equals(""))) {
                 if (!(Year == null || Year.equals(""))) {
@@ -70,5 +72,18 @@ public class DataController {
         }
         return dataRepository.findAll();
     }
+    
+    @RequestMapping(value = "/findPost",method = RequestMethod.POST)
+    public void WriteData(@RequestParam("Company") String Company,
+                                    @RequestParam("League") String League,
+                                    @RequestParam("Year") String Year,
+                                    @RequestParam("Match") String Match){
+        logger.info("Company: " + Company + " League: " + League + " Year: " + Year + " Match: " + Match);
+        List<Data> datas = this.getDataList(Company,League,Year,Match);
+        CsvUtil csv = new CsvUtil();
+        String MatchMessage = Company + League + Year + Match;
+        csv.wirte(MatchMessage, datas);
+    }
+    
     
 }
