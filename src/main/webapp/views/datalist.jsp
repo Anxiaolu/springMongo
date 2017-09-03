@@ -66,7 +66,7 @@
             });
             function loadAllData() {
                 var i = 0;
-                $.post("${ctx}/data/getalldata", {param:"sanic"}, function(data) {
+                $.post("${pageContext.request.contextPath}/data/getalldata", {param:"sanic"}, function(data) {
                 $.each(data, function(){
                     var tr = $("<tr align='center'/>");
                     i+=1;
