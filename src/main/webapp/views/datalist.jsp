@@ -23,79 +23,64 @@
         <div class="container">
             <h1>Data管理</h1>
             <hr/>
-            <form:form action="{ctx}/findPost" method="post">
+            <form:form action="${ctx}/data/findPost" method="post">
                 <div class="form-group">
-                    <label for="Company">Company:</label>
-                    <input type="text" class="form-control" id="Company" name="Company" placeholder="Enter Company:"/>
+                    <label for="company">Company:</label>
+                    <input type="text" class="form-control" id="company" name="company" placeholder="Enter Company:"/>
                 </div>
                 <div class="form-group">
-                    <label for="League">League:</label>
-                    <input type="text" class="form-control" id="League" name="League" placeholder="Enter League:"/>
+                    <label for="league">League:</label>
+                    <input type="text" class="form-control" id="league" name="league" placeholder="Enter League:"/>
                 </div>
                 <div class="form-group">
-                    <label for="Year">Year:</label>
-                    <input type="text" class="form-control" id="Year" name="Year" placeholder="Enter Year:"/>
+                    <label for="year">Year:</label>
+                    <input type="text" class="form-control" id="year" name="year" placeholder="Enter Year:"/>
                 </div>
                 <div class="form-group">
-                    <label for="Match">Match:</label>
-                    <input type="text" class="form-control" id="Match" name="Match" placeholder="Enter Match:"/>
+                    <label for="match">Match:</label>
+                    <input type="text" class="form-control" id="match" name="match" placeholder="Enter Match:"/>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-sm btn-success" id="submit">Output</button>
                 </div>
             </form:form>
             <!-- 如果用户列表非空 -->
-                <table class="table table-bordered table-striped" id="dataList">
-                    <tr>
-                        <th>Order</th>
-                        <th>Company</th>
-                        <th>League</th>
-                        <th>Year</th>
-                        <th>Match</th>
-                        <th>Options</th>
-                    </tr>
-                </table>
+            <table class="table table-bordered table-striped" id="dataList">
+                <tr>
+                    <th>Order</th>
+                    <th>Company</th>
+                    <th>League</th>
+                    <th>Year</th>
+                    <th>Match</th>
+                    <th>Options</th>
+                </tr>
+            </table>
         </div>
         <script>
-            $(document).ready(function(){
+            $(document).ready(function () {
                 loadAllData(    );
             });
 
-            $('#submit').on('click', function(){
+            $('#submit').on('click', function () {
                 loadData();
             });
             function loadAllData() {
                 var i = 0;
-                $.post("${pageContext.request.contextPath}/data/getalldata", {param:"sanic"}, function(data) {
-                $.each(data, function(){
-                    var tr = $("<tr align='center'/>");
-                    i+=1;
-                    $("<td/>").html(i).appendTo(tr);
-                    $("<td/>").html(this.company).appendTo(tr);
-                    $("<td/>").html(this.league).appendTo(tr);
-                    $("<td/>").html(this.year).appendTo(tr);
-                    $("<td/>").html(this.match).appendTo(tr);
-                    $("#dataList").append(tr)
-                    console.log(this)
-                    })
-                }, "json");
-            }
-            function loadData() {
-                var i = 0;
-                $.post("${pageContext.request.contextPath}/data/findPost", {param:"sanic"}, function(data) {
-                $.each(data, function(){
-                    var tr = $("<tr align='center'/>");
-                    i+=1;
-                    $("<td/>").html(i).appendTo(tr);
-                    $("<td/>").html(this.company).appendTo(tr);
-                    $("<td/>").html(this.league).appendTo(tr);
-                    $("<td/>").html(this.year).appendTo(tr);
-                    $("<td/>").html(this.match).appendTo(tr);
-                    $("#dataList").append(tr)
+                $.post("${pageContext.request.contextPath}/data/getalldata", {param: "sanic"}, function (data) {
+                    $.each(data, function () {
+                        var tr = $("<tr align='center'/>");
+                        i += 1;
+                        $("<td/>").html(i).appendTo(tr);
+                        $("<td/>").html(this.company).appendTo(tr);
+                        $("<td/>").html(this.league).appendTo(tr);
+                        $("<td/>").html(this.year).appendTo(tr);
+                        $("<td/>").html(this.match).appendTo(tr);
+                        $("#dataList").append(tr)
+                        console.log(this)
                     })
                 }, "json");
             }
         </script>
-        
+
     </body>
 </html>

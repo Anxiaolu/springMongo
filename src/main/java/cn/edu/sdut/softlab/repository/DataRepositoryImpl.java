@@ -32,38 +32,38 @@ public class DataRepositoryImpl implements DataRepository{
     MongoOperations mongo;
     
     public Long count(){
-        return mongo.getCollection("Data").count();
+        return mongo.getCollection("data").count();
     }
 
     @Override
     public List<Data> findAll() {
-        return mongoTemplate.findAll(Data.class, "Data");
+        return mongoTemplate.findAll(Data.class, "data");
     }
 
     @Override
     public List<Data> findByCompany(String Company) {
-        return mongoTemplate.find(Query.query(Criteria.where(Company).is(Company)),Data.class);
+        return mongoTemplate.find(Query.query(Criteria.where("company").is(Company)),Data.class);
     }
 
     @Override
     public List<Data> findByCompanyAndLeague(String Company, String League) {
         Criteria criteria = new Criteria();
-        criteria.andOperator(Criteria.where("Company").is(Company),Criteria.where("League").is(League));
+        criteria.andOperator(Criteria.where("company").is(Company),Criteria.where("league").is(League));
         return mongoTemplate.find(new Query(criteria), Data.class);
     }
 
     @Override
     public List<Data> findByCompanyAndLeagueAndYear(String Company, String League, String Year) {
         Criteria criteria = new Criteria();
-        criteria.andOperator(Criteria.where("Company").is(Company),Criteria.where("League").is(League),Criteria.where("year").is(Year));
+        criteria.andOperator(Criteria.where("company").is(Company),Criteria.where("league").is(League),Criteria.where("year").is(Year));
         return mongoTemplate.find(new Query(criteria), Data.class);
     }
 
     @Override
     public Data findOneData(String Company, String League, String Year, String Match) {
         Criteria criteria = new Criteria();
-        criteria.andOperator(Criteria.where("Company").is(Company),Criteria.where("League").is(League),
-                Criteria.where("year").is(Year),Criteria.where("Match").is(Match));
+        criteria.andOperator(Criteria.where("company").is(Company),Criteria.where("league").is(League),
+                Criteria.where("year").is(Year),Criteria.where("match").is(Match));
         return mongoTemplate.findOne(new Query(criteria), Data.class);
     }
     

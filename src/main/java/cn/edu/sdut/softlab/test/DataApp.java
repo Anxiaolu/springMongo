@@ -6,6 +6,7 @@
 package cn.edu.sdut.softlab.test;
 
 import cn.edu.sdut.softlab.entity.Data;
+import cn.edu.sdut.softlab.entity.Odds;
 import cn.edu.sdut.softlab.repository.DataRepositoryImpl;
 import cn.edu.sdut.softlab.util.CsvUtil;
 import java.util.List;
@@ -30,9 +31,12 @@ public class DataApp {
 //        logger.info("Data num: " + num);
 //        List<Data> datalist = dataRepository.findAll();
 //        for (Data data : datalist) {
-//            logger.info("Data: " + data.toString());
+//            for (Odds odd: data.getOdds()) {
+//                logger.info("Data: " + data.toString() + "Odd"+ odd.toString());
+//            }
+//            
 //        }
-        List<Data> datalist = dataRepository.findAll();
+        List<Data> datalist = dataRepository.findByCompany("澳门");
         CsvUtil csv = new CsvUtil();
         csv.wirte("MatchMessage", datalist);
 

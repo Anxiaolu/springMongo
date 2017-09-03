@@ -74,13 +74,20 @@ public class DataController {
     }
     
     @RequestMapping(value = "/findPost",method = RequestMethod.POST)
-    public void WriteData(@RequestParam("Company") String Company,
-                                    @RequestParam("League") String League,
-                                    @RequestParam("Year") String Year,
-                                    @RequestParam("Match") String Match){
+    public void WriteData(@RequestParam("company") String Company,
+                                    @RequestParam("league") String League,
+                                    @RequestParam("year") String Year,
+                                    @RequestParam("match") String Match){
         logger.info("Company: " + Company + " League: " + League + " Year: " + Year + " Match: " + Match);
         List<Data> datas = this.getDataList(Company,League,Year,Match);
         CsvUtil csv = new CsvUtil();
+        if (Company.equals("") || Company == null &&
+            League.equals("") || League == null &&
+            Year.equals("") || Year == null &&
+            Match.equals("") || Match == null) {
+            String MatchMessage = "所有记录";
+            csv.wirte(MatchMessage, datas);
+        }
         String MatchMessage = Company + League + Year + Match;
         csv.wirte(MatchMessage, datas);
     }

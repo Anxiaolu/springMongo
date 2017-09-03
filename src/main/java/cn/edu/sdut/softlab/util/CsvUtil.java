@@ -12,8 +12,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
 
@@ -31,9 +29,12 @@ public class CsvUtil {
             String[] tableheader = {"Company","League","Year","Match","Win","Draw","Lose","Rate","UpdateTime"};
             csvWriter.writeRecord(tableheader);
             for (Data data : datalist) {
-                for (Odds odd: data.getOdds()) {
-                    csvWriter.writeRecord(getDataOdd(data, odd));
+                if (!(data.getOdds().equals("") || data.getOdds() == null)) {
+                    for (Odds odd: data.getOdds()) {
+                        csvWriter.writeRecord(this.getDataOdd(data, odd));
+                    }
                 }
+                csvWriter.writeRecord(this.getData(data));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,5 +45,10 @@ public class CsvUtil {
         String[] data = {d.getCompany(),d.getLeague(),d.getYear(),d.getMatch()};
         String[] Odd = {String.valueOf(o.getWin()),String.valueOf(o.getDraw()),String.valueOf(o.getLose()),String.valueOf(o.getReturnRate()),o.getUpdateTime().toString()};
         return  (String[]) ArrayUtils.addAll(data,Odd); 
+    }
+    
+    public String[] getData(Data d){
+        String[] data = {d.getCompany(),d.getLeague(),d.getYear(),d.getMatch()};
+        return data;
     }
 }
