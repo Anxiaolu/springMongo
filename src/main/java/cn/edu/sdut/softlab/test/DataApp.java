@@ -7,6 +7,7 @@ package cn.edu.sdut.softlab.test;
 
 import cn.edu.sdut.softlab.entity.Data;
 import cn.edu.sdut.softlab.repository.DataRepositoryImpl;
+import cn.edu.sdut.softlab.util.CsvUtil;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,13 @@ public class DataApp {
         DataRepositoryImpl dataRepository = context.getBean(DataRepositoryImpl.class);
 //        Long num = dataRepository.count();
 //        logger.info("Data num: " + num);
+//        List<Data> datalist = dataRepository.findAll();
+//        for (Data data : datalist) {
+//            logger.info("Data: " + data.toString());
+//        }
         List<Data> datalist = dataRepository.findAll();
-        for (Data data : datalist) {
-            logger.info("Data: " + data.toString());
-        }
+        CsvUtil csv = new CsvUtil();
+        csv.wirte("MatchMessage", datalist);
 
     }
 }

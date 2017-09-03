@@ -29,15 +29,6 @@ public class Data {
     public Data() {
     }
 
-    public Data(String _id, String Company, String League, String Year, String Match, List<Odds> odds) {
-        this._id = _id;
-        this.Company = Company;
-        this.League = League;
-        this.Year = Year;
-        this.Match = Match;
-        this.Odds = odds;
-    }
-
     public String getId() {
         return _id;
     }

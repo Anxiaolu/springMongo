@@ -12,8 +12,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang.ArrayUtils;
 
 /**
  *
@@ -30,21 +32,17 @@ public class CsvUtil {
             csvWriter.writeRecord(tableheader);
             for (Data data : datalist) {
                 for (Odds odd: data.getOdds()) {
-                    csvWriter.writeRecord(getDataToStrings(data, odd));
+                    csvWriter.writeRecord(getDataOdd(data, odd));
                 }
             }
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public String[] getDataToStrings(Data d,Odds o){
-        String[] data = {d.getCompany(),d.getLeague(),d.getYear(),d.getMatch() + Arrays.toString(this.getOddsToStrings(o))};
-        return data;
-    }
-    public String[] getOddsToStrings(Odds o){
+    public String[] getDataOdd(Data d,Odds o){
+        String[] data = {d.getCompany(),d.getLeague(),d.getYear(),d.getMatch()};
         String[] Odd = {String.valueOf(o.getWin()),String.valueOf(o.getDraw()),String.valueOf(o.getLose()),String.valueOf(o.getReturnRate()),o.getUpdateTime().toString()};
-        return  Odd;
+        return  (String[]) ArrayUtils.addAll(data,Odd); 
     }
 }

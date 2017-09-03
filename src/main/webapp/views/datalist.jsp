@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
@@ -21,27 +23,25 @@
         <div class="container">
             <h1>Data管理</h1>
             <hr/>
-
-            <h3>所有用户 </h3>
-            <form:form action="findPost" method="post" commandName="user" role="form">
+            <form:form action="{ctx}/findPost" method="post">
                 <div class="form-group">
                     <label for="Company">Company:</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter Company:"/>
+                    <input type="text" class="form-control" id="Company" name="Company" placeholder="Enter Company:"/>
                 </div>
                 <div class="form-group">
                     <label for="League">League:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter League:"/>
+                    <input type="text" class="form-control" id="League" name="League" placeholder="Enter League:"/>
                 </div>
                 <div class="form-group">
                     <label for="Year">Year:</label>
-                    <input type="text" class="form-control" id="password" name="password" placeholder="Enter Year:"/>
+                    <input type="text" class="form-control" id="Year" name="Year" placeholder="Enter Year:"/>
                 </div>
                 <div class="form-group">
                     <label for="Match">Match:</label>
-                    <input type="text" class="form-control" id="password" name="password" placeholder="Enter Match:"/>
+                    <input type="text" class="form-control" id="Match" name="Match" placeholder="Enter Match:"/>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-sm btn-success">Output</button>
+                    <button type="submit" class="btn btn-sm btn-success" id="submit">Output</button>
                 </div>
             </form:form>
             <!-- 如果用户列表非空 -->
@@ -58,11 +58,31 @@
         </div>
         <script>
             $(document).ready(function(){
-                loadInfo();
+                loadAllData(    );
             });
-            function loadInfo() {
+
+            $('#submit').on('click', function(){
+                loadData();
+            });
+            function loadAllData() {
                 var i = 0;
-                $.post("${pageContext.request.contextPath}/data/getdatalist", {param:"sanic"}, function(data) {
+                $.post("${ctx}/data/getalldata", {param:"sanic"}, function(data) {
+                $.each(data, function(){
+                    var tr = $("<tr align='center'/>");
+                    i+=1;
+                    $("<td/>").html(i).appendTo(tr);
+                    $("<td/>").html(this.company).appendTo(tr);
+                    $("<td/>").html(this.league).appendTo(tr);
+                    $("<td/>").html(this.year).appendTo(tr);
+                    $("<td/>").html(this.match).appendTo(tr);
+                    $("#dataList").append(tr)
+                    console.log(this)
+                    })
+                }, "json");
+            }
+            function loadData() {
+                var i = 0;
+                $.post("${pageContext.request.contextPath}/data/findPost", {param:"sanic"}, function(data) {
                 $.each(data, function(){
                     var tr = $("<tr align='center'/>");
                     i+=1;
