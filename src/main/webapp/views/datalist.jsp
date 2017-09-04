@@ -58,7 +58,7 @@
         </div>
         <script>
             $(document).ready(function () {
-                loadAllData(    );
+                loadAllData();
             });
 
             $('#submit').on('click', function () {

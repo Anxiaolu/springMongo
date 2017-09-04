@@ -80,8 +80,8 @@ public class Data {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 67 * hash + Objects.hashCode(this._id);
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this._id);
         return hash;
     }
 
@@ -97,11 +97,12 @@ public class Data {
             return false;
         }
         final Data other = (Data) obj;
-        if (!Objects.equals(this._id, other._id)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this._id, other._id);
     }
+
+    
+
+   
    
     @Override
     public String toString() {

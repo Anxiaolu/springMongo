@@ -47,9 +47,9 @@ public class DataController {
     
     public List<String> getJsonChange(List<Data> datalist){
         List<String> JsonList = new ArrayList<>();
-        for (Data data : datalist) {
+        datalist.forEach((data) -> {
             JsonList.add(JSON.toJSONString(data));
-        }
+        });
         return JsonList;
     }
     
@@ -81,10 +81,13 @@ public class DataController {
         logger.info("Company: " + Company + " League: " + League + " Year: " + Year + " Match: " + Match);
         List<Data> datas = this.getDataList(Company,League,Year,Match);
         CsvUtil csv = new CsvUtil();
-        if (Company.equals("") || Company == null &&
+        if (Company.equals("") &&
             League.equals("") || League == null &&
             Year.equals("") || Year == null &&
             Match.equals("") || Match == null) {
+            
+            logger.info("Company: " + Company + " League: " + League + " Year: " + Year + " Match: " + Match);
+            
             String MatchMessage = "所有记录";
             csv.wirte(MatchMessage, datas);
         }
