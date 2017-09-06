@@ -27,6 +27,13 @@
                 <div class="form-group">
                     <label for="company">Company:</label>
                     <input type="text" class="form-control" id="company" name="company" placeholder="Enter Company:"/>
+                    <div id="popdiv">
+                        <table id="content_table" >
+                            <tbody id="content_table_body">
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="league">League:</label>
@@ -60,14 +67,18 @@
             $(document).ready(function () {
                 loadAllData();
             });
-            $("#company").blur(function () {
-                $.$.post('${pageContext.request.contextPath}/data/getleagues', {param1: 'value1'}, function(data) {
-                    
-                });
-            });
+            $("#company").keyup(function (event) {
+                var company_name = $(this).text();
+                setTimeout(function getMore() {
+                    $.post('${pageContext.request.contextPath}/data/getlikecompany/{company_name}', {param: 'sanic'}, function (data) {
+                        $.each(function () {
+                            var tr = $("<tr/>");
+                            $("<td/>").html($(this).company).appendTo(tr);
+                            $("#content_table_body").append(tr);
+                        }, "json");
+                    });
+                }, 500);
 
-            $('#submit').on('click', function () {
-                loadData();
             });
             function loadAllData() {
                 var i = 0;
@@ -81,7 +92,6 @@
                         $("<td/>").html(this.year).appendTo(tr);
                         $("<td/>").html(this.match).appendTo(tr);
                         $("#dataList").append(tr)
-                        console.log(this)
                     })
                 }, "json");
             }

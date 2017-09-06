@@ -36,7 +36,7 @@ public class DataController {
     DataRepository dataRepository;
     
     @RequestMapping(value = "/getalldata", method = RequestMethod.POST)
-    @ResponseBody
+    @ResponseBody   
     public Object getAllData() {
         return dataRepository.findAll();
     }
@@ -44,6 +44,12 @@ public class DataController {
     @RequestMapping(value = "/getdata", method = RequestMethod.GET)
     public String data(ModelMap modelMap) {
         return "datalist";
+    }
+    
+    @RequestMapping(value = "/getlikecompany/{company}",method = RequestMethod.POST)
+    @ResponseBody
+    public Object getLikeCompany(@RequestParam("company")String Company_name){
+        return dataRepository.findLikeCompany(Company_name);
     }
     
     @RequestMapping(value = "/getleagues" , method = RequestMethod.POST)

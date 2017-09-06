@@ -18,27 +18,31 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author huanlu
  */
 public class DataApp {
-    
+
     static final Logger logger = LoggerFactory.getLogger(DataApp.class);
-    
+
     public static void main(String[] args) {
         logger.info("DataApp start");
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:/spring/spring-context.xml");
         DataRepositoryImpl dataRepository = context.getBean(DataRepositoryImpl.class);
-//        Long num = dataRepository.count();
-//        logger.info("Data num: " + num);
-        List<Data> datalist = dataRepository.findAll();
-        for (Data data : datalist) {
-//            if (data.getCompany().equals("澳门")) {
-//                for (Odds odd : data.getOdds()) {
-//                    logger.info("Data: " + data.toString() + "odd" + odd.toString());
-//                }
-//            }
+        //        Long num = dataRepository.count();
+        //        logger.info("Data num: " + num);
+        //        List<Data> datalist = dataRepository.findAll();
+        //        for (Data data : datalist) {
+        //            if (data.getCompany().equals("澳门")) {
+        //                for (Odds odd : data.getOdds()) {
+        //                    logger.info("Data: " + data.toString() + "odd" + odd.toString());
+        //                }
+        //            }
+        //            logger.info("Data: " + data.toString());
+        //        }
+        //        List<Data> datalist = dataRepository.findByCompany("澳门");
+        //        CsvUtil csv = new CsvUtil();
+        //        csv.wirte("MatchMessage", datalist);
+
+        List<Data> datas = dataRepository.findLikeCompany("利");
+        for (Data data : datas) {
             logger.info("Data: " + data.toString());
         }
-//        List<Data> datalist = dataRepository.findByCompany("澳门");
-//        CsvUtil csv = new CsvUtil();
-//        csv.wirte("MatchMessage", datalist);
-
     }
 }

@@ -15,6 +15,9 @@ import java.util.List;
 public interface DataRepository {
 
     List<Data> findAll();
+    
+    //模糊查询
+    List<Data> findLikeCompany(String company_name);
 
     List<Data> findByCompany(String Company);
 
