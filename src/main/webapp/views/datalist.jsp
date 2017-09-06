@@ -60,6 +60,11 @@
             $(document).ready(function () {
                 loadAllData();
             });
+            $("#company").blur(function () {
+                $.$.post('${pageContext.request.contextPath}/data/getleagues', {param1: 'value1'}, function(data) {
+                    
+                });
+            });
 
             $('#submit').on('click', function () {
                 loadData();

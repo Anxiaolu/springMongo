@@ -14,6 +14,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,17 @@ public class DataController {
         return "datalist";
     }
     
+    @RequestMapping(value = "/getleagues" , method = RequestMethod.POST)
+    @ResponseBody
+    public Object getLeagueByCompany(@RequestParam("company") String Company){
+        List<String> leagues = new ArrayList<>();
+        List<Data> datas = dataRepository.findByCompany(Company);
+        for (Data data : datas) {
+            leagues.add(data.getLeague());
+        }
+        return leagues;
+    }
+    
     public List<String> getJsonChange(List<Data> datalist){
         List<String> JsonList = new ArrayList<>();
         datalist.forEach((data) -> {
@@ -55,7 +67,6 @@ public class DataController {
     
     public List<Data> getDataList(String Company, String League, String Year, String Match) {
         List<Data> dataList = new ArrayList<>();
-        logger.info("Find By Company: " + Company + "League: " + League + "Year: " + Year + "Match: " + Match);
         if (!(Company == null || Company.equals(""))) {
             if (!(League == null || League.equals(""))) {
                 if (!(Year == null || Year.equals(""))) {
@@ -78,7 +89,6 @@ public class DataController {
                                     @RequestParam("league") String League,
                                     @RequestParam("year") String Year,
                                     @RequestParam("match") String Match){
-        logger.info("Company: " + Company + " League: " + League + " Year: " + Year + " Match: " + Match);
         List<Data> datas = this.getDataList(Company,League,Year,Match);
         CsvUtil csv = new CsvUtil();
         if (Company.equals("") &&
@@ -86,7 +96,7 @@ public class DataController {
             Year.equals("") || Year == null &&
             Match.equals("") || Match == null) {
             
-            logger.info("Company: " + Company + " League: " + League + " Year: " + Year + " Match: " + Match);
+//            logger.info("Company: " + Company + " League: " + League + " Year: " + Year + " Match: " + Match);
             
             String MatchMessage = "所有记录";
             csv.wirte(MatchMessage, datas);

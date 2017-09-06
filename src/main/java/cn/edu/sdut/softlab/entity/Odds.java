@@ -5,74 +5,64 @@
  */
 package cn.edu.sdut.softlab.entity;
 
-import java.util.Date;
 
 /**
  *
  * @author huanlu
  */
 public class Odds {
-    
-    private Double Win;
-    private Double Draw;
-    private Double Lose;
-    private Double ReturnRate;
-    private Date   UpdateTime;
+
+    private Double win;
+    private Double draw;
+    private Double lose;
+    private String returnRate;
+    private String updateTime;
 
     public Odds() {
     }
 
-    public Odds(Double Win, Double Draw, Double Lose, Double ReturnRate, Date UpdateTime) {
-        this.Win = Win;
-        this.Draw = Draw;
-        this.Lose = Lose;
-        this.ReturnRate = ReturnRate;
-        this.UpdateTime = UpdateTime;
-    }
-
     public Double getWin() {
-        return Win;
+        return win;
     }
 
-    public void setWin(Double Win) {
-        this.Win = Win;
+    public void setWin(Double win) {
+        this.win = win;
     }
 
     public Double getDraw() {
-        return Draw;
+        return draw;
     }
 
-    public void setDraw(Double Draw) {
-        this.Draw = Draw;
+    public void setDraw(Double draw) {
+        this.draw = draw;
     }
 
     public Double getLose() {
-        return Lose;
+        return lose;
     }
 
-    public void setLose(Double Lose) {
-        this.Lose = Lose;
+    public void setLose(Double lose) {
+        this.lose = lose;
     }
 
-    public Double getReturnRate() {
-        return ReturnRate;
+    public String getReturnRate() {
+        return returnRate;
     }
 
-    public void setReturnRate(Double ReturnRate) {
-        this.ReturnRate = ReturnRate;
+    public void setReturnRate(String returnRate) {
+        this.returnRate = returnRate;
     }
 
-    public Date getUpdateTime() {
-        return UpdateTime;
+    public String getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdateTime(Date UpdateTime) {
-        this.UpdateTime = UpdateTime;
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
     public String toString() {
-        return "Odds{" + "Win=" + Win + ", Draw=" + Draw + ", Lose=" + Lose + ", ReturnRate=" + ReturnRate + ", UpdateTime=" + UpdateTime + '}';
+        return "Odds{" + "win=" + win + ", draw=" + draw + ", lose=" + lose + ", returnRate=" + returnRate + ", updateTime=" + updateTime + '}';
     }
-    
 }

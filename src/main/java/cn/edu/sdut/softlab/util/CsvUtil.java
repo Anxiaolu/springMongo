@@ -36,10 +36,17 @@ public class CsvUtil {
                         csvWriter.writeRecord(this.getDataOdd(data, odd));
                     }
                 }
+                System.out.println("--------------------------" + data.toString());
                 csvWriter.writeRecord(this.getData(data));
             }
+            csvWriter.writeRecord(new String[]{"Betano.ro", "英超", "217", "曼彻斯特城VS利物浦赔率", "1.79", "3.6", "3.85", "0.098", "2017-08-14T01:55:00Z"});
+            csvWriter.close();
+            output.close();
         } catch (IOException | ArrayIndexOutOfBoundsException | EnumConstantNotPresentException e) {
+            System.out.println("----------exception----------------\n\n");
         }
+
+        System.out.println("----1234\n\n");
     }
 
     public String[] getDataOdd(Data d, Odds o) {

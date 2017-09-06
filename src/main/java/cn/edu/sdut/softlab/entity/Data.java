@@ -24,8 +24,8 @@ public class Data {
     private String league;
     private String year;
     private String match;
-    @DBRef
-    private List<Odds> Odds;
+    
+    private List<Odds> odds;
 
     public Data() {
     }
@@ -71,11 +71,11 @@ public class Data {
     }
 
     public List<Odds> getOdds() {
-        return Odds;
+        return odds;
     }
 
     public void setOdds(List<Odds> Odds) {
-        this.Odds = Odds;
+        this.odds = Odds;
     }
 
     @Override
@@ -100,13 +100,9 @@ public class Data {
         return Objects.equals(this._id, other._id);
     }
 
-    
-
-   
-   
     @Override
     public String toString() {
-        return "Data{" + "_id=" + _id + ", company=" + company + ", league=" + league + ", year=" + year + ", match=" + match + ", Odds=" + Odds + '}';
+        return "Data{" + "_id=" + _id + ", company=" + company + ", league=" + league + ", year=" + year + ", match=" + match + ", Odds=" + odds + '}';
     }
 
 }
