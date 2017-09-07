@@ -10,13 +10,16 @@ import cn.edu.sdut.softlab.repository.DataRepository;
 import cn.edu.sdut.softlab.util.CsvUtil;
 import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,14 +32,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "data")
 public class DataController {
-    
+
     final static Logger logger = LoggerFactory.getLogger(DataController.class);
 
     @Autowired
     DataRepository dataRepository;
-    
+
     @RequestMapping(value = "/getalldata", method = RequestMethod.POST)
-    @ResponseBody   
+    @ResponseBody
     public Object getAllData() {
         return dataRepository.findAll();
     }
@@ -45,32 +48,61 @@ public class DataController {
     public String data(ModelMap modelMap) {
         return "datalist";
     }
-    
-    @RequestMapping(value = "/getlikecompany/{company}",method = RequestMethod.POST)
+
+    /**
+     * 模糊查询记录中符合条件的(只返回公司名称字段)并去掉重复公司集合
+     * @param Company_name
+     * @return 
+     */
+    @RequestMapping(value = "/getlikecompany", method = RequestMethod.POST)
     @ResponseBody
-    public Object getLikeCompany(@RequestParam("company")String Company_name){
-        return dataRepository.findLikeCompany(Company_name);
+    public Object getLikeCompany(@RequestParam("company_name") String Company_name) {
+        List<Data> datas = dataRepository.findLikeCompany(Company_name);
+        List<String> company_names = new ArrayList<>();
+        for (Data data : datas) {
+            if (!(data.getCompany().equals(""))) {
+                company_names.add(data.getCompany());
+            }
+        }
+        HashSet h = new HashSet(company_names);
+        company_names.clear();
+        company_names.addAll(h);
+        return company_names;
     }
     
-    @RequestMapping(value = "/getleagues" , method = RequestMethod.POST)
+    @RequestMapping(value = "/getleagues", method = RequestMethod.POST)
     @ResponseBody
-    public Object getLeagueByCompany(@RequestParam("company") String Company){
+    public Object getLeaguesByCompany(@RequestParam("company_name") String Company_name) {
+        List<Data> datas = dataRepository.findByCompany(Company_name);
         List<String> leagues = new ArrayList<>();
-        List<Data> datas = dataRepository.findByCompany(Company);
         for (Data data : datas) {
-            leagues.add(data.getLeague());
+            if (!(data.getCompany().equals(""))) {
+                leagues.add(data.getLeague());
+            }
         }
+        HashSet h = new HashSet(leagues);
+        leagues.clear();
+        leagues.addAll(h);
         return leagues;
     }
-    
-    public List<String> getJsonChange(List<Data> datalist){
+
+    @RequestMapping(value = "/getdata", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getDatas(@RequestParam("company") String Company,
+                            @RequestParam(name = "league",required = false) String league,
+                            @RequestParam(name = "Year" ,required = false) String Year,
+                            @RequestParam(name = "Match",required = false) String Match) {
+        return getDataList(Company, league, Year, Match);
+    }
+
+    public List<String> getJsonChange(List<Data> datalist) {
         List<String> JsonList = new ArrayList<>();
         datalist.forEach((data) -> {
             JsonList.add(JSON.toJSONString(data));
         });
         return JsonList;
     }
-    
+
     public List<Data> getDataList(String Company, String League, String Year, String Match) {
         List<Data> dataList = new ArrayList<>();
         if (!(Company == null || Company.equals(""))) {
@@ -89,27 +121,23 @@ public class DataController {
         }
         return dataRepository.findAll();
     }
-    
-    @RequestMapping(value = "/findPost",method = RequestMethod.POST)
+
+    @RequestMapping(value = "/findPost", method = RequestMethod.POST)
     public void WriteData(@RequestParam("company") String Company,
-                                    @RequestParam("league") String League,
-                                    @RequestParam("year") String Year,
-                                    @RequestParam("match") String Match){
-        List<Data> datas = this.getDataList(Company,League,Year,Match);
+            @RequestParam("league") String League,
+            @RequestParam("year") String Year,
+            @RequestParam("match") String Match) {
+        List<Data> datas = this.getDataList(Company, League, Year, Match);
         CsvUtil csv = new CsvUtil();
-        if (Company.equals("") &&
-            League.equals("") || League == null &&
-            Year.equals("") || Year == null &&
-            Match.equals("") || Match == null) {
-            
-//            logger.info("Company: " + Company + " League: " + League + " Year: " + Year + " Match: " + Match);
-            
+        if (Company.equals("")
+                && League.equals("") || League == null
+                && Year.equals("") || Year == null
+                && Match.equals("") || Match == null) {
             String MatchMessage = "所有记录";
             csv.wirte(MatchMessage, datas);
         }
         String MatchMessage = Company + League + Year + Match;
         csv.wirte(MatchMessage, datas);
     }
-    
-    
+
 }
