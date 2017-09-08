@@ -37,7 +37,7 @@ public class CsvUtil {
                         }
                     }
 //                }
-                csvWriter.writeRecord(this.getData(data));
+            csvWriter.writeRecord(this.getData(data));
             }
             csvWriter.writeRecord(new String[]{"Betano.ro", "英超", "2017", "曼彻斯特城VS利物浦赔率", "1.79", "3.6", "3.85", "0.098", "2017-08-14T01:55:00Z"});
             csvWriter.close();
@@ -45,6 +45,14 @@ public class CsvUtil {
         }
     }
 
+    public File process(){
+    return new File("");
+    }
+            
+            
+            
+    
+    
     public String[] getDataOdd(Data d, Odds o) {
         String[] arry = {d.getCompany(), d.getLeague(), d.getYear(), d.getMatch(),o.getWin(), o.getDraw(), o.getLose(), o.getReturnRate(), o.getUpdateTime()} ;
         return arry;
