@@ -5,43 +5,42 @@
  */
 package cn.edu.sdut.softlab.entity;
 
-
 /**
  *
  * @author huanlu
  */
 public class Odds {
 
-    private Double win;
-    private Double draw;
-    private Double lose;
+    private String win;
+    private String draw;
+    private String lose;
     private String returnRate;
     private String updateTime;
 
     public Odds() {
     }
 
-    public Double getWin() {
+    public String getWin() {
         return win;
     }
 
-    public void setWin(Double win) {
+    public void setWin(String win) {
         this.win = win;
     }
 
-    public Double getDraw() {
+    public String getDraw() {
         return draw;
     }
 
-    public void setDraw(Double draw) {
+    public void setDraw(String draw) {
         this.draw = draw;
     }
 
-    public Double getLose() {
+    public String getLose() {
         return lose;
     }
 
-    public void setLose(Double lose) {
+    public void setLose(String lose) {
         this.lose = lose;
     }
 
