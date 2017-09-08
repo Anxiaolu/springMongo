@@ -72,7 +72,7 @@
                     <button type="submit" class="btn btn-sm btn-success" id="submit">Output</button>
                 </div>
                 <div class="form-group">
-                    <a href="${ctx}/download">
+                    <a href="${ctx}/data/download">
                          download
                     </a>
                 </div>

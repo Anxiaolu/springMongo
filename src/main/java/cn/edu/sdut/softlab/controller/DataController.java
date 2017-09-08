@@ -145,17 +145,18 @@ public class DataController {
         csv.wirte(MatchMessage, datas);
     }
     
-        @RequestMapping(value="/download")
-     public ResponseEntity<byte[]> download(HttpServletRequest request,
+    @RequestMapping(value="/download")
+    public ResponseEntity<byte[]> download(HttpServletRequest request,
              Model model)throws Exception {
 
         String filename = "download.csv";
         //下载文件路径
-        String path = request.getServletContext().getRealPath("/images/");
+        String path = request.getServletContext().getRealPath("/");
         File file = new File(path + File.separator + filename);
         HttpHeaders headers = new HttpHeaders();  
         //下载显示的文件名，解决中文名称乱码问题  
-        String downloadFielName = new String(filename.getBytes("UTF-8"),"iso-8859-1");
+//        String downloadFielName = new String(filename.getBytes("UTF-8"),"iso-8859-1");
+        String downloadFielName = new String(filename.getBytes("UTF-8"),"UTF-8");
         //通知浏览器以attachment（下载方式）打开图片
         headers.setContentDispositionFormData("attachment", downloadFielName); 
         //application/octet-stream ： 二进制流数据（最常见的文件下载）。
