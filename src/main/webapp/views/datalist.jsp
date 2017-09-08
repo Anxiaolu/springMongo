@@ -50,6 +50,11 @@
                 <div class="form-group">
                     <button type="submit" class="btn btn-sm btn-success" id="submit">Output</button>
                 </div>
+                <div class="form-group">
+                    <a href="${ctx}/download">
+                         download
+                    </a>
+                </div>
             </form:form>
             <!-- 如果用户列表非空 -->
             <table class="table table-bordered table-striped" id="dataList">
