@@ -49,10 +49,24 @@
                 <div class="form-group">
                     <label for="year">Year:</label>
                     <input type="text" class="form-control" id="year" name="year" placeholder="Enter Year:"/>
+                    <div class="popdiv">
+                        <table id="content_table_3" >
+                            <tbody id="content_table_body_3" class="content_table">
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="match">Match:</label>
                     <input type="text" class="form-control" id="match" name="match" placeholder="Enter Match:"/>
+                    <div class="popdiv">
+                        <table id="content_table_4" >
+                            <tbody id="content_table_body_4" class="content_table">
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-sm btn-success" id="submit">Output</button>
@@ -85,11 +99,19 @@
             function cleardata() {
                 var companytable = document.getElementById("content_table_body_1");
                 var leaguetable = document.getElementById("content_table_body_2");
+                var yeartable = document.getElementById("content_table_body_3");
+                var matchtable = document.getElementById("content_table_body_4");
                 for (var i = $('#content_table_body_1').children().length - 1; i >= 0; i--) {
                     companytable.removeChild(companytable.childNodes[i]);
                 }
                 for (var i = $('#content_table_body_2').children().length - 1; i >= 0; i--) {
                     leaguetable.removeChild(leaguetable.childNodes[i]);
+                }
+                for (var i = $('#content_table_body_3').children().length - 1; i >= 0; i--) {
+                    yeartable.removeChild(yeartable.childNodes[i]);
+                }
+                for (var i = $('#content_table_body_4').children().length - 1; i >= 0; i--) {
+                    matchtable.removeChild(matchtable.childNodes[i]);
                 }
             }
 
@@ -167,6 +189,56 @@
                         $('#content_table_body_2').append(tr);
                     });
                 }, "json");
+            });
+
+            $('#year').bind('focus',function(event) {
+                cleardata();
+                var company_name = $('#company').val();
+                var league_name  = $('#league').val();
+                $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name,league:league_name}, function(data) {
+                    $.each(data,function() {
+                        var tr = $("<tr/>");
+                        var td = $("<td/>");
+                        td.html(this.year).appendTo(tr);
+                        td.hover(function () {
+                            $(this).css({background: '#cdcdcd'});
+                        });
+                        td.mouseleave(function (event) {
+                            $(this).css({background: '#ffffff'});
+                        });
+                        td.click(function (event) {
+                            $('#year').val($(this).text());
+                            cleardata();
+                            $('#match').focus();
+                        });
+                        $('#content_table_body_3').append(tr);
+                    });
+                },"json");
+            });
+
+            $('#match').bind('focus',function(event) {
+                cleardata();
+                var company_name = $('#company').val();
+                var league_name  = $('#league').val();
+                var year         = $('#year').val();
+                $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name,league:league_name,year:year}, function(data) {
+                    $.each(data,function() {
+                        var tr = $("<tr/>");
+                        var td = $("<td/>");
+                        td.html(this.match).appendTo(tr);
+                        td.hover(function () {
+                            $(this).css({background: '#cdcdcd'});
+                        });
+                        td.mouseleave(function (event) {
+                            $(this).css({background: '#ffffff'});
+                        });
+                        td.click(function (event) {
+                            $('#match').val($(this).text());
+                            cleardata();
+                        });
+                        $('#content_table_body_4').append(tr);
+                    });
+                },"json");
             });
 
             function loadAllData() {
