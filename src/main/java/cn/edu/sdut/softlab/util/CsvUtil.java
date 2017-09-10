@@ -36,16 +36,15 @@ public class CsvUtil {
             String[] tableheader = {"Company", "League", "Year", "Match", "Win", "Draw", "Lose", "Rate", "UpdateTime"};
             csvWriter.writeRecord(tableheader);
             for (Data data : datalist) {
+                if (!(data.getOdds() == null)) {
                     for (Odds odd : data.getOdds()) {
-                        if (!(data.getOdds() == null)) {
                             csvWriter.writeRecord(this.getDataOdd(data, odd));
                         }
                     }
             csvWriter.writeRecord(this.getData(data));
             }
-            csvWriter.writeRecord(new String[]{"Betano.ro", "英超", "2017", "曼彻斯特城VS利物浦赔率", "1.79", "3.6", "3.85", "0.098", "2017-08-14T01:55:00Z"});
             csvWriter.close();
-        
+            output.close();
         return output;
     }
     
