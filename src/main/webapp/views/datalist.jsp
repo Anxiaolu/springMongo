@@ -23,7 +23,7 @@
         <div class="container">
             <h1>Data管理</h1>
             <hr/>
-            <form:form action="${ctx}/data/findPost" method="post">
+            <form:form action="${ctx}/data/download" method="post">
                 <div class="form-group">
                     <label for="company">Company:</label>
                     <input type="text" class="form-control" id="company" name="company" placeholder="Enter Company:"/>
@@ -69,12 +69,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-sm btn-success" id="submit">Output</button>
-                </div>
-                <div class="form-group">
-                    <a href="${ctx}/data/download">
-                         download
-                    </a>
+                    <button type="submit" class="btn btn-sm btn-success" id="submit">Download Results</button>
                 </div>
             </form:form>
             <!-- 如果用户列表非空 -->

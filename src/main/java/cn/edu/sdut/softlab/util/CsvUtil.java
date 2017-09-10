@@ -8,6 +8,7 @@ package cn.edu.sdut.softlab.util;
 import cn.edu.sdut.softlab.entity.Data;
 import cn.edu.sdut.softlab.entity.Odds;
 import com.csvreader.CsvWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,36 +23,31 @@ import java.util.List;
  */
 public class CsvUtil {
 
-    public void wirte(String MatchMessage, List<Data> datalist) {
-        try {
-            File f = new File("/home/gaoyisheng/data/" + MatchMessage + ".csv");
-            OutputStream output = new FileOutputStream(f);
-            CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("UTF-8"));
+    /**
+     * .
+     * ByteArrayOutputStream coverte to byteArray
+     * @param datalist
+     * @return 
+     * @throws IOException 
+     */
+    public ByteArrayOutputStream process(List<Data> datalist)throws IOException{
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("UTF-8"));
             String[] tableheader = {"Company", "League", "Year", "Match", "Win", "Draw", "Lose", "Rate", "UpdateTime"};
             csvWriter.writeRecord(tableheader);
             for (Data data : datalist) {
-//                if (!(data.getOdds() == null)) {
                     for (Odds odd : data.getOdds()) {
                         if (!(data.getOdds() == null)) {
                             csvWriter.writeRecord(this.getDataOdd(data, odd));
                         }
                     }
-//                }
             csvWriter.writeRecord(this.getData(data));
             }
             csvWriter.writeRecord(new String[]{"Betano.ro", "英超", "2017", "曼彻斯特城VS利物浦赔率", "1.79", "3.6", "3.85", "0.098", "2017-08-14T01:55:00Z"});
             csvWriter.close();
-        } catch (IOException | ArrayIndexOutOfBoundsException | EnumConstantNotPresentException e) {
-        }
+        
+        return output;
     }
-
-    public File process(){
-    return new File("");
-    }
-            
-            
-            
-    
     
     public String[] getDataOdd(Data d, Odds o) {
         String[] arry = {d.getCompany(), d.getLeague(), d.getYear(), d.getMatch(),o.getWin(), o.getDraw(), o.getLose(), o.getReturnRate(), o.getUpdateTime()} ;

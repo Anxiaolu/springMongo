@@ -9,7 +9,9 @@ import cn.edu.sdut.softlab.entity.Data;
 import cn.edu.sdut.softlab.repository.DataRepository;
 import cn.edu.sdut.softlab.util.CsvUtil;
 import com.alibaba.fastjson.JSON;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -127,41 +129,30 @@ public class DataController {
         return dataRepository.findAll();
     }
 
-    @RequestMapping(value = "/findPost", method = RequestMethod.POST)
-    public void WriteData(@RequestParam("company") String Company,
+    @RequestMapping(value = "/download")
+    public ResponseEntity<byte[]> d(@RequestParam("company") String Company,
             @RequestParam("league") String League,
             @RequestParam("year") String Year,
-            @RequestParam("match") String Match) {
+            @RequestParam("match") String Match,
+            HttpServletRequest request,
+             Model model) throws Exception {
+        
+        String filename = "download.csv";
+        
         List<Data> datas = this.getDataList(Company, League, Year, Match);
         CsvUtil csv = new CsvUtil();
-        if (Company.equals("")
-                && League.equals("") || League == null
-                && Year.equals("") || Year == null
-                && Match.equals("") || Match == null) {
-            String MatchMessage = "所有记录";
-            csv.wirte(MatchMessage, datas);
-        }
-        String MatchMessage = Company + League + Year + Match;
-        csv.wirte(MatchMessage, datas);
-    }
-    
-    @RequestMapping(value="/download")
-    public ResponseEntity<byte[]> download(HttpServletRequest request,
-             Model model)throws Exception {
+        ByteArrayOutputStream baos= csv.process(datas);
 
-        String filename = "download.csv";
         //下载文件路径
-        String path = request.getServletContext().getRealPath("/");
-        File file = new File(path + File.separator + filename);
         HttpHeaders headers = new HttpHeaders();  
         //下载显示的文件名，解决中文名称乱码问题  
 //        String downloadFielName = new String(filename.getBytes("UTF-8"),"iso-8859-1");
-        String downloadFielName = new String(filename.getBytes("UTF-8"),"UTF-8");
+        String downloadFielName = new String(filename.getBytes("UTF-8"),"iso-8859-1");
         //通知浏览器以attachment（下载方式）打开图片
         headers.setContentDispositionFormData("attachment", downloadFielName); 
         //application/octet-stream ： 二进制流数据（最常见的文件下载）。
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),    
-                headers, HttpStatus.CREATED);  
-     }
+        return new ResponseEntity<byte[]>(baos.toByteArray(),    
+                      headers, HttpStatus.CREATED);
+        }
 }
