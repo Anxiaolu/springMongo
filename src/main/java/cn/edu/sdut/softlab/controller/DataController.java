@@ -24,6 +24,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -76,22 +79,6 @@ public class DataController {
         company_names.addAll(h);
         return company_names;
     }
-    
-    @RequestMapping(value = "/getleagues", method = RequestMethod.POST)
-    @ResponseBody
-    public Object getLeaguesByCompany(@RequestParam("company_name") String Company_name) {
-        List<Data> datas = dataRepository.findByCompany(Company_name);
-        List<String> leagues = new ArrayList<>();
-        for (Data data : datas) {
-            if (!(data.getCompany().equals(""))) {
-                leagues.add(data.getLeague());
-            }
-        }
-        HashSet h = new HashSet(leagues);
-        leagues.clear();
-        leagues.addAll(h);
-        return leagues;
-    }
 
     @RequestMapping(value = "/getdata", method = RequestMethod.POST)
     @ResponseBody
@@ -127,6 +114,12 @@ public class DataController {
             return dataRepository.findByCompany(Company);
         }
         return dataRepository.findAll();
+    }
+    
+    @RequestMapping(value = "/getpagedata",method = RequestMethod.POST)
+    public Object getDataByPage(@RequestParam(value = "pageNum")int pageNum,
+                                @RequestParam(value = "pageSize")int pageSize){
+        return dataRepository.findDataByPage(null, pageNum, pageSize);
     }
 
     @RequestMapping(value = "/download")

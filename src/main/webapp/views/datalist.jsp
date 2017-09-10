@@ -238,7 +238,7 @@
 
             function loadAllData() {
                 var i = 0;
-                $.post("${pageContext.request.contextPath}/data/getalldata", null, function (data) {
+                $.post("${pageContext.request.contextPath}/data/getpagedata", null, function (data) {
                     $.each(data, function () {
                         var tr = $("<tr align='center'/>");
                         i += 1;

@@ -5,7 +5,6 @@
  */
 package cn.edu.sdut.softlab.util;
 
-import cn.edu.sdut.softlab.test.DataApp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

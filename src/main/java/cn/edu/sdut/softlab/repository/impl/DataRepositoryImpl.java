@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cn.edu.sdut.softlab.repository;
+package cn.edu.sdut.softlab.repository.impl;
 
 import cn.edu.sdut.softlab.entity.Data;
+import cn.edu.sdut.softlab.entity.Page;
+import cn.edu.sdut.softlab.repository.DataPageRepository;
+import cn.edu.sdut.softlab.repository.DataRepository;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
@@ -26,6 +29,9 @@ public class DataRepositoryImpl implements DataRepository {
 
     static final Logger logger = LoggerFactory.getLogger(DataRepositoryImpl.class);
 
+    @Autowired
+    DataPageRepository dataPageRepository;
+    
     @Autowired
     MongoTemplate mongoTemplate;
 
@@ -74,6 +80,20 @@ public class DataRepositoryImpl implements DataRepository {
         Query query = Query.query(Criteria.where("company").regex(pattern));
         List<Data> datas = mongoTemplate.find(query, Data.class, "data");
         return datas;
+    }
+
+    /**
+     * 分页查询实现方法
+     * @param searchModel
+     * @param pageNum
+     * @param pageSize
+     * @return 
+     */
+    @Override
+    public Page<Data> findDataByPage(Data searchModel, int pageNum, int pageSize) {
+        List<Data> datas = this.findAll();
+        Page<Data> pager = new Page<Data>(pageNum,pageSize,datas);
+        return pager;
     }
 
 }
