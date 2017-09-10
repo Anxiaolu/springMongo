@@ -162,10 +162,10 @@
     </welcome-file-list>
    
    <!--找不到页面错误转向-->
-    <error-page>
+<!--    <error-page>
         <error-code>error</error-code>
         <location>/error.jsp</location>
-    </error-page>
+    </error-page>-->
 <!--    系统内部错误转向
     <error-page>
         <error-code>500</error-code>
