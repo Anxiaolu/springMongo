@@ -6,7 +6,7 @@
 package cn.edu.sdut.softlab.test;
 
 import cn.edu.sdut.softlab.entity.Data;
-import cn.edu.sdut.softlab.repository.DataRepositoryImpl;
+import cn.edu.sdut.softlab.repository.impl.DataRepositoryImpl;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

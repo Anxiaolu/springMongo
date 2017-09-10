@@ -12,14 +12,11 @@ import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,22 +66,6 @@ public class DataController {
         company_names.addAll(h);
         return company_names;
     }
-    
-    @RequestMapping(value = "/getleagues", method = RequestMethod.POST)
-    @ResponseBody
-    public Object getLeaguesByCompany(@RequestParam("company_name") String Company_name) {
-        List<Data> datas = dataRepository.findByCompany(Company_name);
-        List<String> leagues = new ArrayList<>();
-        for (Data data : datas) {
-            if (!(data.getCompany().equals(""))) {
-                leagues.add(data.getLeague());
-            }
-        }
-        HashSet h = new HashSet(leagues);
-        leagues.clear();
-        leagues.addAll(h);
-        return leagues;
-    }
 
     @RequestMapping(value = "/getdata", method = RequestMethod.POST)
     @ResponseBody
@@ -120,6 +101,12 @@ public class DataController {
             return dataRepository.findByCompany(Company);
         }
         return dataRepository.findAll();
+    }
+    
+    @RequestMapping(value = "/getpagedata",method = RequestMethod.POST)
+    public Object getDataByPage(@RequestParam(value = "pageNum")int pageNum,
+                                @RequestParam(value = "pageSize")int pageSize){
+        return dataRepository.findDataByPage(null, pageNum, pageSize);
     }
 
     @RequestMapping(value = "/findPost", method = RequestMethod.POST)
