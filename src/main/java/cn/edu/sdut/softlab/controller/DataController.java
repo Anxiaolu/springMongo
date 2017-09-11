@@ -61,8 +61,9 @@ public class DataController {
 
     /**
      * 模糊查询记录中符合条件的(只返回公司名称字段)并去掉重复公司集合
+     *
      * @param Company_name
-     * @return 
+     * @return
      */
     @RequestMapping(value = "/getlikecompany", method = RequestMethod.POST)
     @ResponseBody
@@ -83,9 +84,9 @@ public class DataController {
     @RequestMapping(value = "/getdata", method = RequestMethod.POST)
     @ResponseBody
     public Object getDatas(@RequestParam("company") String Company,
-                            @RequestParam(name = "league",required = false) String league,
-                            @RequestParam(name = "Year" ,required = false) String Year,
-                            @RequestParam(name = "Match",required = false) String Match) {
+            @RequestParam(name = "league", required = false) String league,
+            @RequestParam(name = "Year", required = false) String Year,
+            @RequestParam(name = "Match", required = false) String Match) {
         return getDataList(Company, league, Year, Match);
     }
 
@@ -115,37 +116,39 @@ public class DataController {
         }
         return dataRepository.findAll();
     }
-    
-    @RequestMapping(value = "/getpagedata",method = RequestMethod.POST)
-    public Object getDataByPage(@RequestParam(value = "pageNum")int pageNum,
-                                @RequestParam(value = "pageSize")int pageSize){
+
+    @RequestMapping(value = "/getpagedata", method = RequestMethod.POST)
+    public Object getDataByPage(@RequestParam(value = "pageNum") int pageNum,
+            @RequestParam(value = "pageSize") int pageSize) {
         return dataRepository.findDataByPage(null, pageNum, pageSize);
     }
 
     @RequestMapping(value = "/download")
-    public ResponseEntity<byte[]> d(@RequestParam("company") String Company,
+    @ResponseBody
+    public ResponseEntity<byte[]> download(@RequestParam("company") String Company,
             @RequestParam("league") String League,
             @RequestParam("year") String Year,
             @RequestParam("match") String Match,
             HttpServletRequest request,
-             Model model) throws Exception {
-        
+            Model model) throws Exception {
+
         String filename = "download.csv";
-        
+
         List<Data> datas = this.getDataList(Company, League, Year, Match);
-        ByteArrayOutputStream baos= new CsvUtil().process(datas);
+        ByteArrayOutputStream baos =(ByteArrayOutputStream) new CsvUtil().process(datas);
         baos.close();
 
         //下载文件路径
-        HttpHeaders headers = new HttpHeaders();  
+        HttpHeaders headers = new HttpHeaders();
         //下载显示的文件名，解决中文名称乱码问题  
-//        String downloadFielName = new String(filename.getBytes("UTF-8"),"UTF-8");
-        String downloadFielName = new String(filename.getBytes("UTF-8"),"UTF-8");
+        //String downloadFielName = new String(filename.getBytes("UTF-8"),"UTF-8");
+//        String downloadFielName = new String(filename.getBytes(""), "iso-8859-1");
         //通知浏览器以attachment（下载方式）打开图片
-        headers.setContentDispositionFormData("attachment", downloadFielName); 
+//        headers.setContentDispositionFormData("attachment", downloadFielName);
+        headers.setContentDispositionFormData("attachment", filename);
         //application/octet-stream ： 二进制流数据（最常见的文件下载）。
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        return new ResponseEntity<byte[]>(baos.toByteArray(),    
-                      headers, HttpStatus.CREATED);
-        }
+        return new ResponseEntity<byte[]>(baos.toByteArray(),
+                headers, HttpStatus.CREATED);
+    }
 }
