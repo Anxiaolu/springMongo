@@ -110,23 +110,6 @@
                 }
             }
 
-            /*function addtr(data, appendparent,content_table) {
-             var tr = $("<tr/>");
-             var td = $("<td/>");
-             td.html(data).appendTo(tr);
-             td.hover(function () {
-             $(this).css({background: '#cdcdcd'});
-             });
-             td.mouseleave(function (event) {
-             $(this).css({background: '#ffffff'});
-             });
-             td.click(function (event) {
-             $(appendparent).val($(this).text());
-             cleardata();
-             $('#league').focus();
-             });
-             $(content_table).append(tr);
-             }*/
 
             $("#company").bind('keyup foucus', function (event) {
                 cleardata();
@@ -136,7 +119,6 @@
                         cleardata();
                     } else {
                         $.post('${pageContext.request.contextPath}/data/getlikecompany', {company_name: company}, function (data) {
-
                             $.each(data, function () {
                                 /*var that = this;
                                  addtr(that,"#company","#content_table_body_1");*/
@@ -164,81 +146,93 @@
             $("#league").bind('focus', function (event) {
                 cleardata();
                 var company_name = $('#company').val();
-                $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name}, function (data) {
-                    $.each(data, function () {
-                        //console.log(this);
-                        var tr = $("<tr/>");
-                        var td = $("<td/>");
-                        td.html(this.league).appendTo(tr);
-                        td.hover(function () {
-                            $(this).css({background: '#cdcdcd'});
+                if ($('#company').val() === "") {
+                    cleardata();
+                } else {
+                    $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name}, function (data) {
+                        $.each(data, function () {
+                            //console.log(this);
+                            var tr = $("<tr/>");
+                            var td = $("<td/>");
+                            td.html(this.league).appendTo(tr);
+                            td.hover(function () {
+                                $(this).css({background: '#cdcdcd'});
+                            });
+                            td.mouseleave(function (event) {
+                                $(this).css({background: '#ffffff'});
+                            });
+                            td.click(function (event) {
+                                $('#league').val($(this).text());
+                                cleardata();
+                                $('#year').focus();
+                            });
+                            $('#content_table_body_2').append(tr);
                         });
-                        td.mouseleave(function (event) {
-                            $(this).css({background: '#ffffff'});
-                        });
-                        td.click(function (event) {
-                            $('#league').val($(this).text());
-                            cleardata();
-                            $('#year').focus();
-                        });
-                        $('#content_table_body_2').append(tr);
-                    });
-                }, "json");
+                    }, "json");
+                }
             });
 
-            $('#year').bind('focus',function(event) {
+            $('#year').bind('focus', function (event) {
                 cleardata();
                 var company_name = $('#company').val();
-                var league_name  = $('#league').val();
-                $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name,league:league_name}, function(data) {
-                    $.each(data,function() {
-                        var tr = $("<tr/>");
-                        var td = $("<td/>");
-                        td.html(this.year).appendTo(tr);
-                        td.hover(function () {
-                            $(this).css({background: '#cdcdcd'});
+                var league_name = $('#league').val();
+                if ($('#company').val() === "" && $('#league').val() === "") {
+                    cleardata();
+                } else {
+                    $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name, league: league_name}, function (data) {
+                        $.each(data, function () {
+                            var tr = $("<tr/>");
+                            var td = $("<td/>");
+                            td.html(this.year).appendTo(tr);
+                            td.hover(function () {
+                                $(this).css({background: '#cdcdcd'});
+                            });
+                            td.mouseleave(function (event) {
+                                $(this).css({background: '#ffffff'});
+                            });
+                            td.click(function (event) {
+                                $('#year').val($(this).text());
+                                cleardata();
+                                $('#match').focus();
+                            });
+                            $('#content_table_body_3').append(tr);
                         });
-                        td.mouseleave(function (event) {
-                            $(this).css({background: '#ffffff'});
-                        });
-                        td.click(function (event) {
-                            $('#year').val($(this).text());
-                            cleardata();
-                            $('#match').focus();
-                        });
-                        $('#content_table_body_3').append(tr);
-                    });
-                },"json");
+                    }, "json");
+                }
             });
 
-            $('#match').bind('focus',function(event) {
+            $('#match').bind('focus', function (event) {
                 cleardata();
                 var company_name = $('#company').val();
-                var league_name  = $('#league').val();
-                var year         = $('#year').val();
-                $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name,league:league_name,year:year}, function(data) {
-                    $.each(data,function() {
-                        var tr = $("<tr/>");
-                        var td = $("<td/>");
-                        td.html(this.match).appendTo(tr);
-                        td.hover(function () {
-                            $(this).css({background: '#cdcdcd'});
+                var league_name = $('#league').val();
+                var year = $('#year').val();
+                if ($('#company').val() === "" && $('#league').val() === "" && $('#year').val() === "") {
+                    cleardata();
+                } else {
+                    $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name, league: league_name, year: year}, function (data) {
+                        $.each(data, function () {
+                            var tr = $("<tr/>");
+                            var td = $("<td/>");
+                            td.html(this.match).appendTo(tr);
+                            td.hover(function () {
+                                $(this).css({background: '#cdcdcd'});
+                            });
+                            td.mouseleave(function (event) {
+                                $(this).css({background: '#ffffff'});
+                            });
+                            td.click(function (event) {
+                                $('#match').val($(this).text());
+                                cleardata();
+                            });
+                            $('#content_table_body_4').append(tr);
                         });
-                        td.mouseleave(function (event) {
-                            $(this).css({background: '#ffffff'});
-                        });
-                        td.click(function (event) {
-                            $('#match').val($(this).text());
-                            cleardata();
-                        });
-                        $('#content_table_body_4').append(tr);
-                    });
-                },"json");
+                    }, "json");
+                }
             });
 
             function loadAllData() {
                 var i = 0;
-                $.post("${pageContext.request.contextPath}/data/getpagedata", null, function (data) {
+                $.post("${pageContext.request.contextPath}/data/getalldata", null, function (data) {
                     $.each(data, function () {
                         var tr = $("<tr align='center'/>");
                         i += 1;
