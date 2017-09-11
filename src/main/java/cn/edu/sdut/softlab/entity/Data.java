@@ -5,6 +5,7 @@
  */
 package cn.edu.sdut.softlab.entity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
@@ -23,7 +24,7 @@ public class Data {
     private String league;
     private String year;
     private String match;
-    
+
     private List<Odds> odds;
 
     public Data() {
@@ -70,6 +71,9 @@ public class Data {
     }
 
     public List<Odds> getOdds() {
+        if (odds.isEmpty()) {
+            odds.add(new Odds("无","无","无",0.0,new Date()));
+        }
         return odds;
     }
 
@@ -101,7 +105,7 @@ public class Data {
 
     @Override
     public String toString() {
-        return "Data{" + "_id=" + _id + ", company=" + company + ", league=" + league + ", year=" + year + ", match=" + match + ", Odds=" + odds + '}';
+        return "Data{" + "_id=" + _id + ", company=" + company + ", league=" + league + ", year=" + year + ", match=" + match +  '}';
     }
 
 }

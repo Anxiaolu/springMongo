@@ -5,6 +5,9 @@
  */
 package cn.edu.sdut.softlab.entity;
 
+import java.util.Date;
+import java.util.Objects;
+
 /**
  *
  * @author huanlu
@@ -14,10 +17,18 @@ public class Odds {
     private String win;
     private String draw;
     private String lose;
-    private String returnRate;
-    private String updateTime;
+    private Double returnrate;
+    private Date updatetime;
 
     public Odds() {
+    }
+    
+    public Odds(String _win,String _draw,String _lose,Double _returnrate,Date _updatetime){
+        this.win = _win;
+        this.draw = _draw;
+        this.lose = _lose;
+        this.returnrate = _returnrate;
+        this.updatetime = _updatetime;
     }
 
     public String getWin() {
@@ -44,24 +55,46 @@ public class Odds {
         this.lose = lose;
     }
 
-    public String getReturnRate() {
-        return returnRate;
+    public Double getReturnrate() {
+        return returnrate;
     }
 
-    public void setReturnRate(String returnRate) {
-        this.returnRate = returnRate;
+    public void setReturnrate(Double returnrate) {
+        this.returnrate = returnrate;
     }
 
-    public String getUpdateTime() {
-        return updateTime;
+    public Date getUpdatetime() {
+        return updatetime;
     }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
     }
 
     @Override
     public String toString() {
-        return "Odds{" + "win=" + win + ", draw=" + draw + ", lose=" + lose + ", returnRate=" + returnRate + ", updateTime=" + updateTime + '}';
+        return "Odds{" + "win=" + win + ", draw=" + draw + ", lose=" + lose + ", returnRate=" + returnrate + ", updateTime=" + updatetime + '}';
     }
+
+//    @Override
+//    public int hashCode() {
+//        int hash = 7666;
+//        hash = 17666 * hash + Objects.hashCode(this.returnrate);
+//        return hash;
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (this == obj) {
+//            return true;
+//        }
+//        if (obj == null) {
+//            return false;
+//        }
+//        if (getClass() != obj.getClass()) {
+//            return false;
+//        }
+//        final Odds other = (Odds) obj;
+//        return Objects.equals(this.returnrate, other.returnrate);
+//    }
 }
