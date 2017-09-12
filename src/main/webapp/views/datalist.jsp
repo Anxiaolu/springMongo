@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-sm btn-success" id="submit">Download Results</button>
+                    <button type="submit" class="btn btn-sm btn-success" id="submit">下载查询结果</button>
                 </div>
             </form:form>
             <!-- 如果用户列表非空 -->
