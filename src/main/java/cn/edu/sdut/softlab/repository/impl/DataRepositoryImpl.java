@@ -68,10 +68,9 @@ public class DataRepositoryImpl implements DataRepository {
 
     @Override
     public Data findOneData(String Company, String League, String Year, String Match) {
-        Criteria criteria = new Criteria();
-        criteria.andOperator(Criteria.where("company").is(Company), Criteria.where("league").is(League),
-                Criteria.where("year").is(Year), Criteria.where("match").is(Match));
-        return mongoTemplate.findOne(new Query(criteria), Data.class);
+        Integer year = Integer.parseInt(Year);
+        Query query = new Query(Criteria.where("company").is(Company).and("league").is(League).and("year").is(year).and("match").is(Match));
+        return mongoTemplate.findOne(query, Data.class);
     }
 
     @Override
