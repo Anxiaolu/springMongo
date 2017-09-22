@@ -1,3 +1,4 @@
+@charset "utf-8";    
 body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
@@ -298,6 +299,33 @@ button:active:focus, button.active:focus { outline: 0; opacity: 0.6; background:
     width: 60px;
     height: 60px;
 }
+
+  
+.pagination a {
+    text-decoration: none;
+	border: 1px solid #AAE;
+	color: #15B;
+}
+
+.pagination a, .pagination span {
+    display: inline-block;
+    padding: 0.1em 0.4em;
+    margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.pagination .current {
+    background: #26B;
+    color: #fff;
+	border: 1px solid #AAE;
+}
+
+.pagination .current.prev, .pagination .current.next{
+	color:#999;
+	border-color:#999;
+	background:#fff;
+}
+
 
 
 /***** Media queries *****/

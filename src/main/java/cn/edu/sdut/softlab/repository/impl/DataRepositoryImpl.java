@@ -38,6 +38,7 @@ public class DataRepositoryImpl implements DataRepository {
     @Autowired
     MongoOperations mongo;
 
+    @Override
     public Long count() {
         return mongo.getCollection("data").count();
     }

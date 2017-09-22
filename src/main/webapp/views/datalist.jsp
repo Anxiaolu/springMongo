@@ -15,9 +15,10 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css">
         <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.pagination.js"></srcipt>
         <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <!--        <script src="${pageContext.request.contextPath}/assets/boostrap/js/bootstrap.min.js"></script>-->
-
+        
     </head>
     <body>
         <div class="container">
@@ -83,6 +84,9 @@
                     <th>Options</th>
                 </tr>
             </table>
+            <div id="News-Pagination">
+                
+            </div>
         </div>
         <!--数据加载函数调用-->
         <!-- <script src="${pageContext.request.contextPath}/assets/js/script.js"></script> -->
@@ -229,6 +233,26 @@
                     }, "json");
                 }
             });
+
+            /*$(function(){
+                var num_entries;
+                $.post('${pageContext.request.contextPath}/data/countdata', null, function(data) {
+                    num_entries = data;
+                });
+                $("#News-Pagination").pagination(num_entries,{
+                    num_edge_entries:2,    //边缘页数
+                    num_display_entries: 4, //主体页数
+                    callback: pageselectCallback,
+                    items_per_page: 1, //每页显示1项
+                    prev_text: "前一页",
+                    next_text: "后一页"
+                }); 
+            });
+
+            function pageselectCallback(page_index, jq){
+                
+                return false;
+            }*/
 
             function loadAllData() {
                 var i = 0;

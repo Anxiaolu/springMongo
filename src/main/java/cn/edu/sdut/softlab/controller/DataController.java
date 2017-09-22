@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,6 +46,11 @@ public class DataController {
     @RequestMapping(value = "/getdata", method = RequestMethod.GET)
     public String data(ModelMap modelMap) {
         return "datalist";
+    }
+
+    @RequestMapping(value = "/countdata", method = RequestMethod.POST)
+    public long countData() {
+        return dataRepository.count();
     }
 
     /**
@@ -106,8 +112,8 @@ public class DataController {
     }
 
     @RequestMapping(value = "/getpagedata", method = RequestMethod.POST)
-    public Object getDataByPage(@RequestParam(value = "pageNum") int pageNum,
-            @RequestParam(value = "pageSize") int pageSize) {
+    public Object getDataByPage(@PathVariable(value = "pageNum") int pageNum,
+            @PathVariable(value = "pageSize") int pageSize) {
         return dataRepository.findDataByPage(null, pageNum, pageSize);
     }
 
@@ -120,8 +126,8 @@ public class DataController {
             @RequestParam("match") String Match,
             HttpServletResponse response) throws Exception {
         String s = "attachment; filename=" + combineFileName(Company, League, Year, Match);
-        String fileName = new String(s.getBytes("UTF-8"),"iso-8859-1");//解决文件名中文乱码问题,勿改
-        
+        String fileName = new String(s.getBytes("UTF-8"), "iso-8859-1");//解决文件名中文乱码问题,勿改
+
         List<Data> datas = this.getDataList(Company, League, Year, Match);
         response.setHeader("Content-Disposition", fileName);
         response.setContentType("application/csv");

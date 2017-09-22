@@ -14,6 +14,8 @@ import java.util.List;
  * @author huanlu
  */
 public interface DataRepository {
+    
+    Long count();
 
     List<Data> findAll();
     
