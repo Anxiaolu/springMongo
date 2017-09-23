@@ -41,7 +41,9 @@ public class CsvUtil {
     }
 
     public String[] getDataOdd(Data d, Odds o) {
-        String[] arry = {d.getCompany(), d.getLeague(), d.getYear(), d.getMatch(), o.getWin(), o.getDraw(), o.getLose(), o.getReturnrate().toString(), o.getUpdatetime().toString()};
+        DateUtil dateUtil = new DateUtil();
+        String[] arry = {d.getCompany(), d.getLeague(), d.getYear(), d.getMatch(), o.getWin(), o.getDraw(),
+            o.getLose(), o.getReturnrate().toString(), dateUtil.dateToStrLong(o.getUpdatetime())};
         return arry;
     }
 
