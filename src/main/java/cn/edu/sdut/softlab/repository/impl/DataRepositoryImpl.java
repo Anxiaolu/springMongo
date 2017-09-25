@@ -48,35 +48,35 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public List<Data> findByCompany(String Company) {
-        return mongoTemplate.find(Query.query(Criteria.where("company").is(Company)), Data.class);
+    public List<Data> findByMatch(String  Match) {
+        return mongoTemplate.find(Query.query(Criteria.where("match").is(Match)), Data.class);
     }
 
     @Override
-    public List<Data> findByCompanyAndLeague(String Company, String League) {
+    public List<Data> findByMatchAndLeague(String Match, String League) {
         Criteria criteria = new Criteria();
-        criteria.andOperator(Criteria.where("company").is(Company), Criteria.where("league").is(League));
-        return mongoTemplate.find(new Query(criteria), Data.class);
+        Query query = new Query(Criteria.where("match").is(Match).and("league").is(League));
+        return mongoTemplate.find(query, Data.class);
     }
 
     @Override
-    public List<Data> findByCompanyAndLeagueAndYear(String Company, String League, String Year) {
+    public List<Data> findByMatchAndLeagueAndYear(String  Match, String League, String Year) {
         Criteria criteria = new Criteria();
-        criteria.andOperator(Criteria.where("company").is(Company), Criteria.where("league").is(League), Criteria.where("year").is(Year));
-        return mongoTemplate.find(new Query(criteria), Data.class);
+        Query query = new Query(Criteria.where("match").is(Match).and("league").is(League).and("year").is(Integer.parseInt(Year)));
+        return mongoTemplate.find(query, Data.class);
     }
 
     @Override
     public Data findOneData(String Company, String League, String Year, String Match) {
         Integer year = Integer.parseInt(Year);
-        Query query = new Query(Criteria.where("company").is(Company).and("league").is(League).and("year").is(year).and("match").is(Match));
+        Query query = new Query(Criteria.where("company").is(Company).and("league").is(League).and("year").is(Integer.parseInt(Year)).and("match").is(Match));
         return mongoTemplate.findOne(query, Data.class);
     }
 
     @Override
-    public List<Data> findLikeCompany(String company_name) {
-        Pattern pattern = Pattern.compile("^.*" + company_name + ".*$", Pattern.CASE_INSENSITIVE);
-        Query query = Query.query(Criteria.where("company").regex(pattern));
+    public List<Data> findLikeMatch(String match_name) {
+        Pattern pattern = Pattern.compile("^.*" + match_name + ".*$", Pattern.CASE_INSENSITIVE);
+        Query query = Query.query(Criteria.where("match").regex(pattern));
         List<Data> datas = mongoTemplate.find(query, Data.class, "data");
         return datas;
     }
