@@ -30,6 +30,14 @@ public class Data {
     public Data() {
     }
 
+    public Data(String company, String league, String year, String match, List<Odds> odds) {
+        this.company = company;
+        this.league = league;
+        this.year = year;
+        this.match = match;
+        this.odds = odds;
+    }
+    
     public String getId() {
         return _id;
     }
