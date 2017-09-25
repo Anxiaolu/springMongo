@@ -17,7 +17,9 @@
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <!--        <script src="${pageContext.request.contextPath}/assets/boostrap/js/bootstrap.min.js"></script>-->
-
+<style type="text/css">
+    
+</style>
     </head>
     <body>
         <div class="container">
@@ -25,8 +27,8 @@
             <hr/>
             <form:form action="${ctx}/data/download" method="post">
                 <div class="form-group">
-                    <label for="company">Company:</label>
-                    <input type="text" class="form-control" id="company" name="company" placeholder="Enter Company:"/>
+                    <label for="match">Match:</label>
+                    <input type="text" class="form-control" id="match" name="match" placeholder="Enter Match:"/>
                     <div class="popdiv">
                         <table id="content_table_1" >
                             <tbody id="content_table_body_1" class="content_table">
@@ -58,8 +60,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="match">Match:</label>
-                    <input type="text" class="form-control" id="match" name="match" placeholder="Enter Match:"/>
+                    <label for="company">Company:</label>
+                    <input type="text" class="form-control" id="company" name="company" placeholder="Enter Company:"/>
                     <div class="popdiv">
                         <table id="content_table_4" >
                             <tbody id="content_table_body_4" class="content_table">
@@ -67,6 +69,14 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="box">
+                    <h4>查询时间</h4>
+                    <input type="datetime-local" id="time" name="time"/>
+                </div>
+                <div class="box">
+                    <h4>下载记录数</h4>
+                    <input type="text" id="num" name="datanum"/>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-sm btn-success" id="submit">下载查询结果</button>
@@ -88,7 +98,7 @@
         <!-- <script src="${pageContext.request.contextPath}/assets/js/script.js"></script> -->
         <script type="text/javascript">
             $(document).ready(function () {
-                loadAllData();
+                //loadAllData();
             });
 
             function cleardata() {
@@ -111,17 +121,15 @@
             }
 
 
-            $("#company").bind('keyup foucus', function (event) {
+            $("#match").bind('keyup foucus', function (event) {
                 cleardata();
-                var company = $(this).context.value;
+                var match = $(this).context.value;
                 setTimeout(function () {
-                    if ($('#company').val() === "") {
+                    if ($('#match').val() === "") {
                         cleardata();
                     } else {
-                        $.post('${pageContext.request.contextPath}/data/getlikecompany', {company_name: company}, function (data) {
+                        $.post('${pageContext.request.contextPath}/data/getlikematch', {match_name: match}, function (data) {
                             $.each(data, function () {
-                                /*var that = this;
-                                 addtr(that,"#company","#content_table_body_1");*/
                                 var tr = $("<tr/>");
                                 var td = $("<td/>");
                                 td.html(this).appendTo(tr);
@@ -132,7 +140,7 @@
                                     $(this).css({background: '#ffffff'});
                                 });
                                 td.click(function (event) {
-                                    $('#company').val($(this).text());
+                                    $('#match').val($(this).text());
                                     cleardata();
                                     $('#league').focus();
                                 });
@@ -145,19 +153,18 @@
 
             $("#league").bind('focus', function (event) {
                 cleardata();
-                var company_name = $('#company').val();
-                if ($('#company').val() === "") {
+                var match_name = $('#match').val();
+                if ($('#match').val() === "") {
                     cleardata();
                 } else {
-                    $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name}, function (data) {
+                    $.post('${pageContext.request.contextPath}/data/getleaguebymatch', {match: match_name}, function (data) {
                         $.each(data, function () {
-                            //console.log(this);
                             var tr = $("<tr/>");
                             var td = $("<td/>");
-                            td.html(this.league).appendTo(tr);
+                            td.html(this).appendTo(tr);
                             td.hover(function () {
                                 $(this).css({background: '#cdcdcd'});
-                            });
+                            }); 
                             td.mouseleave(function (event) {
                                 $(this).css({background: '#ffffff'});
                             });
@@ -174,16 +181,16 @@
 
             $('#year').bind('focus', function (event) {
                 cleardata();
-                var company_name = $('#company').val();
+                var match_name = $('#match').val();
                 var league_name = $('#league').val();
                 if ($('#company').val() === "" && $('#league').val() === "") {
                     cleardata();
                 } else {
-                    $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name, league: league_name}, function (data) {
+                    $.post('${pageContext.request.contextPath}/data/getyearbyleague', {match: match_name, league: league_name}, function (data) {
                         $.each(data, function () {
                             var tr = $("<tr/>");
                             var td = $("<td/>");
-                            td.html(this.year).appendTo(tr);
+                            td.html(this).appendTo(tr);
                             td.hover(function () {
                                 $(this).css({background: '#cdcdcd'});
                             });
@@ -193,7 +200,7 @@
                             td.click(function (event) {
                                 $('#year').val($(this).text());
                                 cleardata();
-                                $('#match').focus();
+                                $('#company').focus();
                             });
                             $('#content_table_body_3').append(tr);
                         });
@@ -201,19 +208,19 @@
                 }
             });
 
-            $('#match').bind('focus', function (event) {
+            $('#company').bind('focus', function (event) {
                 cleardata();
-                var company_name = $('#company').val();
+                var match_name = $('#match').val();
                 var league_name = $('#league').val();
                 var year = $('#year').val();
-                if ($('#company').val() === "" && $('#league').val() === "" && $('#year').val() === "") {
+                if ($('#match').val() === "" && $('#league').val() === "" && $('#year').val() === "") {
                     cleardata();
                 } else {
-                    $.post('${pageContext.request.contextPath}/data/getdata', {company: company_name, league: league_name, year: year}, function (data) {
+                    $.post('${pageContext.request.contextPath}/data/getcompanybyother', {match: match_name, league: league_name, year: year}, function (data) {
                         $.each(data, function () {
                             var tr = $("<tr/>");
                             var td = $("<td/>");
-                            td.html(this.match).appendTo(tr);
+                            td.html(this).appendTo(tr);
                             td.hover(function () {
                                 $(this).css({background: '#cdcdcd'});
                             });
@@ -221,7 +228,7 @@
                                 $(this).css({background: '#ffffff'});
                             });
                             td.click(function (event) {
-                                $('#match').val($(this).text());
+                                $('#company').val($(this).text());
                                 cleardata();
                             });
                             $('#content_table_body_4').append(tr);
@@ -230,7 +237,7 @@
                 }
             });
 
-            function loadAllData() {
+            /*function loadAllData() {
                 var i = 0;
                 $.post("${pageContext.request.contextPath}/data/getalldata", null, function (data) {
                     $.each(data, function () {
@@ -244,7 +251,7 @@
                         $("#dataList").append(tr)
                     })
                 }, "json");
-            }
+            }*/
         </script>
     </body>
 </html>
