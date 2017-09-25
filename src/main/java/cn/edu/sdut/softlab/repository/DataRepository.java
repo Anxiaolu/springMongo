@@ -27,13 +27,13 @@ public interface DataRepository {
     public Page<Data> findDataByPage(Data searchModel,int pageNum,int pageSize);
     
     //模糊查询
-    List<Data> findLikeCompany(String company_name);
+    List<Data> findLikeMatch(String Match);
 
-    List<Data> findByCompany(String Company);
+    List<Data> findByMatch(String Match);
 
-    List<Data> findByCompanyAndLeague(String Company, String League);
+    List<Data> findByMatchAndLeague(String Match, String League);
 
-    List<Data> findByCompanyAndLeagueAndYear(String Company, String League, String Year);
+    List<Data> findByMatchAndLeagueAndYear(String Match, String League, String Year);
 
     Data findOneData(String Company, String League, String Year, String Match);
 }
