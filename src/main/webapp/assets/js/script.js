@@ -25,11 +25,12 @@ function cleardata() {
 $("#match").bind('keyup foucus', function (event) {
     cleardata();
     var match = $(this).context.value;
+    console.log(match);
     setTimeout(function () {
         if ($('#match').val() === "") {
             cleardata();
         } else {
-            $.post('${ctx}/data/getlikematch', {match_name: match}, function (data) {
+            $.post('getlikematch', {match_name: match}, function (data) {
                 $.each(data, function () {
                     var tr = $("<tr/>");
                     var td = $("<td/>");
@@ -58,7 +59,7 @@ $("#league").bind('focus', function (event) {
     if ($('#match').val() === "") {
         cleardata();
     } else {
-        $.post('${ctx}/data/getleaguebymatch', {match: match_name}, function (data) {
+        $.post('getleaguebymatch', {match: match_name}, function (data) {
             $.each(data, function () {
                 var tr = $("<tr/>");
                 var td = $("<td/>");
@@ -87,7 +88,7 @@ $('#year').bind('focus', function (event) {
     if ($('#company').val() === "" && $('#league').val() === "") {
         cleardata();
     } else {
-        $.post('${ctx}/data/getyearbyleague', {match: match_name, league: league_name}, function (data) {
+        $.post('getyearbyleague', {match: match_name, league: league_name}, function (data) {
             $.each(data, function () {
                 var tr = $("<tr/>");
                 var td = $("<td/>");
@@ -114,10 +115,11 @@ $('#company').bind('focus', function (event) {
     var match_name = $('#match').val();
     var league_name = $('#league').val();
     var year = $('#year').val();
+    var company_name = $(this).val();
     if ($('#match').val() === "" && $('#league').val() === "" && $('#year').val() === "") {
         cleardata();
     } else {
-        $.post('${ctx}/data/getcompanybyother', {match: match_name, league: league_name, year: year}, function (data) {
+        $.post('getcompanybyother', {match: match_name, league: league_name, year: year}, function (data) {
             $.each(data, function () {
                 var tr = $("<tr/>");
                 var td = $("<td/>");
@@ -129,6 +131,8 @@ $('#company').bind('focus', function (event) {
                     $(this).css({background: '#ffffff'});
                 });
                 td.click(function (event) {
+                    console.log($(this));
+                    loaddata(match_name,league_name,year,company_name);
                     $('#company').val($(this).text());
                     cleardata();
                 });
@@ -137,6 +141,22 @@ $('#company').bind('focus', function (event) {
         }, "json");
     }
 });
+
+function loaddata(match_name,league_name,year,company){
+    var i = 0;
+    $.post("getadata", {match:match_name,league:league_name,year:year,company:company}, function (data) {
+        $.each(data, function () {
+            var tr = $("<tr align='center'/>");
+            i += 1;
+            $("<td/>").html(i).appendTo(tr);
+            $("<td/>").html(this.company).appendTo(tr);
+            $("<td/>").html(this.league).appendTo(tr);
+            $("<td/>").html(this.year).appendTo(tr);
+            $("<td/>").html(this.match).appendTo(tr);
+            $("#dataList").append(tr)
+        })
+    }, "json");
+}
 
 /*function loadAllData() {
     var i = 0;
