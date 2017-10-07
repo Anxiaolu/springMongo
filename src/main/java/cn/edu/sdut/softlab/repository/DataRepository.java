@@ -16,16 +16,17 @@ import java.util.List;
 public interface DataRepository {
 
     List<Data> findAll();
-    
+
     /**
      * 根据查询条件,查询记录分页信息
+     *
      * @param searchModel 封装查询条件
-     * @param pageNum     查询第几页数据
-     * @param pageSize    每页显示多少条记录
-     * @return            查询结果
+     * @param pageNum 查询第几页数据
+     * @param pageSize 每页显示多少条记录
+     * @return 查询结果
      */
-    public Page<Data> findDataByPage(Data searchModel,int pageNum,int pageSize);
-    
+    public Page<Data> findDataByPage(Data searchModel, int pageNum, int pageSize);
+
     //模糊查询
     List<Data> findLikeMatch(String Match);
 
@@ -34,6 +35,8 @@ public interface DataRepository {
     List<Data> findByMatchAndLeague(String Match, String League);
 
     List<Data> findByMatchAndLeagueAndYear(String Match, String League, String Year);
+
+    List<Data> findDatasBySomeCompany(String Match, String League, String Year, String[] Companys);
 
     Data findOneData(String Company, String League, String Year, String Match);
 }

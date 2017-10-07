@@ -54,14 +54,12 @@ public class DataRepositoryImpl implements DataRepository {
 
     @Override
     public List<Data> findByMatchAndLeague(String Match, String League) {
-        Criteria criteria = new Criteria();
         Query query = new Query(Criteria.where("match").is(Match).and("league").is(League));
         return mongoTemplate.find(query, Data.class);
     }
 
     @Override
     public List<Data> findByMatchAndLeagueAndYear(String  Match, String League, String Year) {
-        Criteria criteria = new Criteria();
         Query query = new Query(Criteria.where("match").is(Match).and("league").is(League).and("year").is(Integer.parseInt(Year)));
         return mongoTemplate.find(query, Data.class);
     }
@@ -93,6 +91,19 @@ public class DataRepositoryImpl implements DataRepository {
         List<Data> datas = this.findAll();
         Page<Data> pager = new Page<Data>(pageNum,pageSize,datas);
         return pager;
+    }
+
+    @Override
+    public List<Data> findDatasBySomeCompany(String Match, String League, String Year, String[] Companys) {
+        Integer year = Integer.parseInt(Year);
+        Criteria[] criterias = new Criteria[Companys.length];
+        for (int i = 0; i < Companys.length; i++) {
+            Criteria criteria = Criteria.where("match").is(Match).and("year").is(year)
+                    .and("league").is(League).and("company").is(Companys[i]);
+            criterias[i] = criteria;
+            criteria = null;
+        }
+        return mongoTemplate.find(new Query(new Criteria().orOperator(criterias)) , Data.class);
     }
 
 }
