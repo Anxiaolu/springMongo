@@ -16,7 +16,7 @@
         <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
         <script src="${ctx}/assets/js/jquery-1.11.1.min.js"></script>
         <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<!--        <script src="${pageContext.request.contextPath}/assets/boostrap/js/bootstrap.min.js"></script>-->
+        <script src="${ctx}/assets/bootstrap/js/bootstrap.min.js"></script>
 <style type="text/css">
     
 </style>
@@ -71,8 +71,12 @@
                     </div>
                 </div>
                 <div class="box">
-                    <h4>查询时间</h4>
-                    <input type="datetime-local" id="time" name="time"/>
+                    <h4>开始时间</h4>
+                    <input type="datetime-local" id="starttime" name="starttime"/>
+                </div>
+                <div class="box">
+                    <h4>结束时间</h4>
+                    <input type="datetime-local" id="endtime" name="endtime"/>
                 </div>
                 <div class="box">
                     <h4>下载记录数</h4>
@@ -82,19 +86,27 @@
                     <button type="submit" class="btn btn-sm btn-success" id="submit">下载查询结果</button>
                 </div>
             </form:form>
-            <!-- 如果用户列表非空 -->
-            <table class="table table-bordered table-striped" id="dataList">
-                <tr>
-                    <th>Order</th>
-                    <th>Company</th>
-                    <th>League</th>
-                    <th>Year</th>
-                    <th>Match</th>
-                    <th>Options</th>
-                </tr>
-            </table>
+
+            <div>
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist" id="nav-tabs">
+                
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content" id="tab-content">
+                
+              </div>
+
+            </div>
         </div>
         <!--数据加载函数调用-->
-        <script src="${ctx}/assets/js/script.js"></script>
+        <script src="../assets/js/script.js"></script>
+        <script type="text/javascript">
+            $('#myTabs a').click(function (e) {
+              e.preventDefault()
+              $(this).tab('show')
+            })
+        </script>
     </body>
 </html>
