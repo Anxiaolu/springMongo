@@ -10,8 +10,10 @@ import cn.edu.sdut.softlab.entity.Odds;
 import cn.edu.sdut.softlab.repository.DataRepository;
 import cn.edu.sdut.softlab.util.CsvUtil;
 import cn.edu.sdut.softlab.util.DateUtil;
+import cn.edu.sdut.softlab.util.StringUtil;
 import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -125,11 +127,12 @@ public class DataController {
 
     @RequestMapping(value = "/getdata", method = RequestMethod.POST)
     @ResponseBody
-    public Object getDatas(@RequestParam(name = "company", required = false) String Company,
+    public Object getDatas(@RequestParam(name = "company", required = false)String Companys,
             @RequestParam(name = "league", required = false) String league,
             @RequestParam(name = "year", required = false) String Year,
             @RequestParam(name = "match") String Match) {
-        return getDataList(Company, league, Year, Match);
+        StringUtil stringUtil = new StringUtil();
+        return getDataList(Match, league, Year, stringUtil.stringAnalytical(Companys, ','));
     }
 
     public List<String> getJsonChange(List<Data> datalist) {
@@ -139,11 +142,12 @@ public class DataController {
         });
         return JsonList;
     }
-    
+
     /**
      * 遍历集合查找在给定时间之前差值最小的时间并返回对应的Odd数据
+     *
      * @param Odds
-     * @param date 
+     * @param date
      */
     public Odds getDateMinDiff(List<Odds> Odds, Date date) {
         long diff = new Long(999999999);
@@ -159,29 +163,27 @@ public class DataController {
         }
         return odd;
     }
-    
-    public List<Data> getDatasByDateDiff(List<Data> datas,int n,Date date){
+
+    public List<Data> getDatasByDateDiff(List<Data> datas, int n, Date date) {
         List<Data> datalist = new ArrayList<>();
         for (Data data : datas) {
-            for (Odds  odd : data.getOdds()) {
+            for (Odds odd : data.getOdds()) {
                 if (odd.equals(this.getDateMinDiff(data.getOdds(), date))) {
                     List<Odds> Oddses = data.getOdds().subList(data.getOdds().indexOf(odd), n);
                     datalist.add(new Data(data.getCompany(), data.getLeague(), data.getYear(), data.getMatch(), Oddses));
                 }
-            }   
+            }
         }
         return datalist;
     }
 
-    public List<Data> getDataList(String Company, String League, String Year, String Match) {
+    public List<Data> getDataList(String Match, String League, String Year, String[] Companys) {
         List<Data> dataList = new ArrayList<>();
         if (!(Match == null || Match.equals(""))) {
             if (!(League == null || League.equals(""))) {
                 if (!(Year == null || Year.equals(""))) {
-                    if (!(Company == null || Company.equals(""))) {
-                        Data data = dataRepository.findOneData(Company, League, Year, Match);
-                        dataList.add(data);
-                        return dataList;
+                    if (!(Companys == null || Companys.equals(""))) {
+                        return dataRepository.findDatasBySomeCompany(Match, League, Year, Companys);
                     }
                     return dataRepository.findByMatchAndLeagueAndYear(Match, League, Year);
                 }
@@ -201,17 +203,17 @@ public class DataController {
     @RequestMapping(value = "/download")
     @ResponseBody
     public void download(
-            @RequestParam("company") String Company,
+            @RequestParam("company") String[] Companys,
             @RequestParam("league") String League,
             @RequestParam("year") String Year,
             @RequestParam("match") String Match,
-            @RequestParam("time") String Time,
-            @RequestParam("datanum")Integer Num,
+            @RequestParam("starttime") String Time,
+            @RequestParam("datanum") Integer Num,
             HttpServletResponse response) throws Exception {
-        String s = "attachment; filename=" + combineFileName(Company, League, Year, Match);
+        String s = "attachment; filename=" + combineFileName(Companys[0], League, Year, Match);
         String fileName = new String(s.getBytes("UTF-8"), "iso-8859-1");//解决文件名中文乱码问题,勿改
 
-        List<Data> datas = this.getDataList(Company, League, Year, Match);
+        List<Data> datas = this.getDataList(Match, League, Year, Companys);
         response.setHeader("Content-Disposition", fileName);
         response.setContentType("application/csv");
         CsvUtil csvUtil = new CsvUtil();
